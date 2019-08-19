@@ -25,10 +25,33 @@ var mySht85Sensor = new Sht85();
 
 	
 ### Perform and read measurement
+Perform a single reading with default repeatability "low":
 ```cs
 Tuple<double, double> measData = mySht85Sensor.SingleShot();
 double temperature = measData.Item1;
 double humidity = measData.Item2;
+```
+
+
+### Periodic Data Acquisition Mode
+Start the periodic data acquisition mode with specified measure mode:
+```cs
+void StartPeriodicDataAcquisitionMode()
+{
+	//...
+	mySht85Sensor.NewMeasData += mySht85Sensor_NewMeasData;
+	mySht85Sensor.StartPeriodicDataAcquisitionMode(PeriodicMeasureModes.High10Hz);
+	//...
+}
+```
+Method to receive the `NewMeasData` event:
+```cs
+void mySht85Sensor_NewMeasData(Tuple<DateTime, double, double> measData)
+{
+	DateTime timeStamp = measData.Item1;
+	double temperature = measData.Item2;
+	double humidity = measData.Item3;
+}
 ```
 
 
