@@ -3,6 +3,7 @@ using Rca.Sht85Lib.Helpers;
 using Rca.Sht85Lib.Objects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace Rca.Sht85Lib
         #region Members
         private I2cDevice m_Sensor { get; set; }
         private int m_RemainingI2cReadAttempts;
+
+        private BackgroundWorker m_FetchDataWorker;
 
         #endregion Members
 
@@ -57,25 +60,43 @@ namespace Rca.Sht85Lib
 
         #endregion Properties
 
+        #region Constructor
+        /// <summary>
+        /// Generate a new SHT85 sensor object
+        /// </summary>
+        /// <param name="slaveAddress">I2C address</param>
         public Sht85(byte slaveAddress = DEFAULT_ADDRESS)
         {
             Init(slaveAddress);
         }
 
+        /// <summary>
+        /// Kill the current sensor object
+        /// </summary>
         public void Dispose()
         {
             throw new NotImplementedException();
         }
 
+        #endregion Constructor
+
         #region Services
         /// <summary>
-        /// 
+        /// Perform a soft reset
         /// </summary>
         public void Reset()
         {
-
+            WriteCommand(Sht85Commands.SOFT_RESET);
+            SpinWait.SpinUntil(() => false, 2);
         }
 
+        /// <summary>
+        /// Perform a single reading
+        /// </summary>
+        /// <param name="repeatability">Repeatability</param>
+        /// <returns>Measvalues
+        /// Item1: Temperature in °C
+        /// Item2: Humidity in %RH</returns>
         public Tuple<double, double> SingleShot(Sht85Repeatability repeatability = Sht85Repeatability.Low)
         {
             switch (repeatability)
@@ -96,18 +117,42 @@ namespace Rca.Sht85Lib
             var data = ReadWordsAndCrc(2);
 
             var t = ConvertTemperature(data.Range(0, 2));
-            var rh = ConvertTemperature(data.Range(2, 2));
+            var rh = ConvertHumidity(data.Range(2, 2));
 
             return new Tuple<double, double>(t, rh);
         }
 
+        /// <summary>
+        /// Start periodic data acquisition mode
+        /// Each measurement fires an event on <seealso cref="NewMeasData"/>
+        /// </summary>
+        /// <param name="mode">Repeatability and frequency</param>
         public void StartPeriodicDataAcquisitionMode(PeriodicMeasureModes mode)
         {
-            throw new NotImplementedException();
-
             WriteCommand((Sht85Commands)mode);
+            SpinWait.SpinUntil(() => false, PROCESSING_DELAY);
+
+            m_FetchDataWorker = new BackgroundWorker()
+            {
+                WorkerSupportsCancellation = true
+            };
+
+            m_FetchDataWorker.DoWork += new DoWorkEventHandler(FetchDataWorker_DoWork);
+            m_FetchDataWorker.RunWorkerAsync(mode.GetPeriodTime());
+        }
+
+
+        /// <summary>
+        /// Stop the periodic data acquisition mode
+        /// </summary>
+        public void StopPeriodicDataAcquisitionMode()
+        {
+            WriteCommand(Sht85Commands.BREAK);
 
             SpinWait.SpinUntil(() => false, PROCESSING_DELAY);
+
+            if (m_FetchDataWorker != null && m_FetchDataWorker.WorkerSupportsCancellation == true)
+                m_FetchDataWorker.CancelAsync();
         }
 
         /// <summary>
@@ -190,7 +235,7 @@ namespace Rca.Sht85Lib
             try
             {
                 var readingResult = m_Sensor.ReadPartial(buffer);
-
+                
                 if (readingResult.Status == I2cTransferStatus.SlaveAddressNotAcknowledged && m_RemainingI2cReadAttempts > 0)
                     return ReadWordsAndCrc(wordCount, true);
                 else if (readingResult.Status != I2cTransferStatus.FullTransfer)
@@ -233,17 +278,19 @@ namespace Rca.Sht85Lib
         /// <summary>
         /// Send a  command to the sensor
         /// </summary>
-        private void WriteCommand(Sht85Commands command)
+        private I2cTransferStatus WriteCommand(Sht85Commands command)
         {
             try
             {
                 var cmd = BitConverter.GetBytes((UInt16)command);
 
-                m_Sensor.Write(cmd.Reverse().ToArray());
+                var result = m_Sensor.WritePartial(cmd.Reverse().ToArray());
+                return result.Status;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                return I2cTransferStatus.UnknownError;
             }
         }
 
@@ -253,6 +300,34 @@ namespace Rca.Sht85Lib
                 return false;
             else
                 return Crc8.ComputeChecksum(data) == 0;
+        }
+
+        private void FetchDataWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int refreshRate = (int)e.Argument - (2 * PROCESSING_DELAY); //TODO: Find out optimal refresh rate.
+            Debug.WriteLine("Refreshrate = " + refreshRate + " ms");
+
+            while (!m_FetchDataWorker.CancellationPending)
+            {
+                var res = WriteCommand(Sht85Commands.FETCH_DATA);
+                Debug.WriteLine("Fetch status: " + res);
+
+                try
+                {
+                    var data = ReadWordsAndCrc(2);
+
+                    var t = ConvertTemperature(data.Range(0, 2));
+                    var rh = ConvertHumidity(data.Range(2, 2));
+
+                    NewMeasData?.Invoke(new Tuple<DateTime, double, double>(DateTime.Now, t, rh));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+
+                SpinWait.SpinUntil(() => false, refreshRate);
+            }
         }
 
         #region Sht85 services, Access by properties
@@ -294,5 +369,22 @@ namespace Rca.Sht85Lib
         #endregion Sht85 services, Access by properties
 
         #endregion Internal services
+
+        #region Events
+        /// <summary>
+        /// Delegate for new measdata
+        /// </summary>
+        /// <param name="measData">Measdata
+        /// Item1: Timespamp
+        /// Item2: Temperature in °C
+        /// Item3: Humidity in %RH</param>
+        public delegate void NewMeasDataEventHandler(Tuple<DateTime, double, double> measData);
+
+        /// <summary>
+        /// Event for periodic data acquisition mode 
+        /// </summary>
+        public event NewMeasDataEventHandler NewMeasData;
+
+        #endregion Events
     }
 }

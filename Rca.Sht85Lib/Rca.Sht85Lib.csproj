@@ -122,11 +122,13 @@
   <ItemGroup>
     <Compile Include="Crc8.cs" />
     <Compile Include="Helpers\ByteArrayExtensions.cs" />
+    <Compile Include="Helpers\PeriodicMeasureModeExtensions.cs" />
     <Compile Include="Objects\Sht85AcquisitionFrequency.cs" />
     <Compile Include="Objects\Sht85Commands.cs" />
     <Compile Include="Objects\Sht85Repeatability.cs" />
     <Compile Include="Objects\Sht85Status.cs" />
     <Compile Include="PeriodicMeasureModes.cs" />
+    <Compile Include="RefreshRateAttribute.cs" />
     <Compile Include="Sht85.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Rca.EzoDeviceLib.rd.xml" />
