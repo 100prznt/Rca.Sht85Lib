@@ -44,7 +44,7 @@ void StartPeriodicDataAcquisitionMode()
 	//...
 }
 ```
-Method to receive the `NewMeasData` event:
+Method to receive the `NewMeasData` event. The update rate depends on the selected measure mode and the hardware runtimes:
 ```cs
 void mySht85Sensor_NewMeasData(Tuple<DateTime, double, double> measData)
 {
