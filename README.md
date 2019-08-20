@@ -1,5 +1,5 @@
 ## Project under construction :construction:
-This project are curently (2019/08/19) under construction.
+This project are curently (2019/08/20) under construction.
 
 ---
 
@@ -65,7 +65,7 @@ void mySht85Sensor_NewMeasData(Tuple<DateTime, double, double> measData)
 
 
 ### Use Physics.Calculator
-The library also offers a calculator, which offers the possibility to calculate further sizes.
+The library also offers a calculator, which offers the possibility to calculate further sizes. `measData` is the `Tuple<double, double>` object (Item1: temperature in °C; Item2: rel. humidity in %RH), e.g. provided by `SigleShot()`.
 ```cs
 var myCalculator = new Rca.Sht85Lib.Physics.Calculator();
 
