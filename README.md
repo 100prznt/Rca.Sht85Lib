@@ -32,7 +32,19 @@ Download the source from GitHub or get the compiled assembly from NuGet [Rca.Sht
 
 
 ## How to use?
-Some basic usage examples
+All measured and calculated values are of the data type `double` and are given in the following units:
+
+| Value                      | Unit | Range  |
+|----------------------------|------|--------|
+| Temperature                | °C   |        |
+| Relative humidity          | %RH  | 0..100 |
+| Absolute humidity          | %    | 0..100 |
+| Dew point                  | °C   |        |
+| Vapour pressure            | hPa  |        |
+| Saturation vapour pressure | hPa  |        |
+
+
+In the following a few basic usage examples of the library.
 
 ### Create an sensor instance
 In this example is the I2C address of conneted SHT85 sensor set to default (0x44 factory-fixed):
@@ -72,14 +84,14 @@ void mySht85Sensor_NewMeasData(Tuple<DateTime, double, double> measData)
 ```
 
 
-### Use Physics.Calculator
+### Use the Physics.Calculator
 The library also offers a calculator, which offers the possibility to calculate further sizes.
 `measData` is an `Tuple<double, double>` object (Item1: temperature in °C; Item2: rel. humidity in %RH), e.g. provided by `SigleShot()`.
 ```cs
 var myCalculator = new Rca.Sht85Lib.Physics.Calculator();
 
-var dewPoint = myCalculator.DewPoint(measData);           //double
-var absHumidity = myCalculator.AbsoluteHumidity(measData) //double
+var dewPoint = myCalculator.DewPoint(measData);            //double
+var absHumidity = myCalculator.AbsoluteHumidity(measData); //double
 ```
 
 
