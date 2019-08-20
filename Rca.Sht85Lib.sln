@@ -7,16 +7,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rca.Sht85Lib", "Rca.Sht85Li
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|ARM.ActiveCfg = Debug|ARM
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|ARM.Build.0 = Debug|ARM
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -29,6 +33,8 @@ Global
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|x86.ActiveCfg = Debug|x86
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|x86.Build.0 = Debug|x86
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Debug|x86.Deploy.0 = Debug|x86
+		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Release|ARM.ActiveCfg = Release|ARM
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Release|ARM.Build.0 = Release|ARM
 		{ADF68653-5B76-4CFF-8117-FB8B19BE0351}.Release|ARM.Deploy.0 = Release|ARM

@@ -128,6 +128,7 @@
     <Compile Include="Objects\Sht85Repeatability.cs" />
     <Compile Include="Objects\Sht85Status.cs" />
     <Compile Include="PeriodicMeasureModes.cs" />
+    <Compile Include="Physics\Calculator.cs" />
     <Compile Include="RefreshRateAttribute.cs" />
     <Compile Include="Sht85.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

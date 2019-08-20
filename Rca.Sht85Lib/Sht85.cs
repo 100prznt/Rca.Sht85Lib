@@ -75,7 +75,8 @@ namespace Rca.Sht85Lib
         /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (m_FetchDataWorker != null)
+                m_FetchDataWorker.CancelAsync();
         }
 
         #endregion Constructor
