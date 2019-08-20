@@ -29,16 +29,16 @@ Some basic usage examples
 ### Create an sensor instance
 In this example is the I2C address of conneted SHT85 sensor set to default (0x44 factory-fixed):
 ```cs
-var mySht85Sensor = new Sht85();
+var mySht85Sensor = new Rca.Sht85Lib.Sht85();
 ```
 
 	
 ### Perform and read measurement
 Perform a single reading with default repeatability "low":
 ```cs
-Tuple<double, double> measData = mySht85Sensor.SingleShot();
-double temperature = measData.Item1;
-double humidity = measData.Item2;
+var measData = mySht85Sensor.SingleShot(); //Tuple<double, double>
+var temperature = measData.Item1;          //double
+var humidity = measData.Item2;             //double
 ```
 
 
@@ -57,10 +57,20 @@ Method to receive the `NewMeasData` event. The update rate depends on the select
 ```cs
 void mySht85Sensor_NewMeasData(Tuple<DateTime, double, double> measData)
 {
-	DateTime timeStamp = measData.Item1;
-	double temperature = measData.Item2;
-	double humidity = measData.Item3;
+	var timeStamp = measData.Item1;   //DateTime object
+	var temperature = measData.Item2; //double
+	var humidity = measData.Item3;    //double
 }
+```
+
+
+### Use Physics.Calculator
+The library also offers a calculator, which offers the possibility to calculate further sizes.
+```cs
+var myCalculator = new Rca.Sht85Lib.Physics.Calculator();
+
+var dewPoint = myCalculator.DewPoint(measData);           //double
+var absHumidity = myCalculator.AbsoluteHumidity(measData) //double
 ```
 
 
