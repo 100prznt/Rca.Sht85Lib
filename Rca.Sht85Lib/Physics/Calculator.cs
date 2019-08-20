@@ -11,6 +11,7 @@ namespace Rca.Sht85Lib.Physics
     /// </summary>
     public class Calculator
     {
+        #region Constants
         /// <summary>
         /// Absoluter Nullpunkt = -273,15 °C
         /// </summary>
@@ -24,7 +25,19 @@ namespace Rca.Sht85Lib.Physics
         /// </summary>
         const double R = 8.31446261815324;
         readonly MagnusParameter MAG_WATER = MagnusParameter.OverWater();
+        #endregion Constants
 
+        #region Constructor
+        /// <summary>
+        /// New calculator with default parameters for 'over water'
+        /// </summary>
+        public Calculator()
+        {
+            //
+        }
+        #endregion Constructor
+
+        #region Services
         /// <summary>
         /// Absolute humidity calculation
         /// </summary>
@@ -133,7 +146,9 @@ namespace Rca.Sht85Lib.Physics
 
             return vp;
         }
-
+        #endregion Services
+        
+        #region Internal services
         private void CheckValues(double temperature, double relHumidity, MagnusParameter magnusParas)
         {
             if (temperature < magnusParas.LowerLimit || temperature > magnusParas.UpperLimit)
@@ -143,6 +158,9 @@ namespace Rca.Sht85Lib.Physics
                 throw new ArgumentOutOfRangeException($"Realtive humidity value ({relHumidity.ToString("F2")} %RH) out of valid range, 0 ... 100 %RH.");
         }
 
+        #endregion Internal services
+
+        #region Embedded structs
         /// <summary>
         /// Magnusparameters for the Magnus-Formula
         /// https://de.wikipedia.org/wiki/Magnus-Formel
@@ -193,5 +211,7 @@ namespace Rca.Sht85Lib.Physics
                 return new MagnusParameter() { K1 = 6.112, K2 = 22.46, K3 = 272.62, UpperLimit = 0.01, LowerLimit = -65 };
             }
         }
+
+        #endregion Embedded structs
     }
 }
