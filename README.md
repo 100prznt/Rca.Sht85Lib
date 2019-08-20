@@ -34,14 +34,14 @@ Download the source from GitHub or get the compiled assembly from NuGet [Rca.Sht
 ## How to use?
 All measured and calculated values are of the data type `double` and are given in the following units:
 
-| Value                      | Unit | Range  |
-|----------------------------|------|--------|
-| Temperature                | °C   |        |
-| Relative humidity          | %RH  | 0..100 |
-| Absolute humidity          | %    | 0..100 |
-| Dew point                  | °C   |        |
-| Vapour pressure            | hPa  |        |
-| Saturation vapour pressure | hPa  |        |
+| Value                      | Unit   | Range  |
+|:---------------------------|:-------|:-------|
+| __Temperature__            | __°C__ |        |
+| __Relative humidity__      | __%RH__| 0..100 |
+| Absolute humidity          | %      | 0..100 |
+| Dew point                  | °C     |        |
+| Vapour pressure            | hPa    |        |
+| Saturation vapour pressure | hPa    |        |
 
 
 In the following a few basic usage examples of the library.
