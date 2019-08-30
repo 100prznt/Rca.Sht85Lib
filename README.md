@@ -1,3 +1,4 @@
+![Sensirion SHT85](docu/img/sensirion-sht85.jpg "Photo of the Sensirion Humidity Sensor SHT85")
 # SHT85 Library
 Open source UWP library for communication with Sensirion Humidity Sensor SHT85. 
 
@@ -6,7 +7,6 @@ This library targets __UWP IoT projects__! Download directly from NuGet [Rca.Sht
 
 [![Bulid](https://img.shields.io/appveyor/ci/100prznt/rca-sht85lib.svg?logo=appveyor&style=popout-square)](https://ci.appveyor.com/project/100prznt/rca-sht85lib)   [![Current version](https://img.shields.io/nuget/v/Rca.Sht85Lib.svg?logo=nuget&logoColor=%23ef8b00&style=popout-square)](https://www.nuget.org/packages/Rca.Sht85Lib/)   [![Code size](https://img.shields.io/github/languages/code-size/100prznt/Rca.Sht85Lib.svg?logo=github&style=popout-square)](#) 
 
-![Sensirion SHT85](docu/img/sensirion-sht85.jpg "Photo of the Sensirion Humidity Sensor SHT85")
 
 ### Hardware functionality
 * SingleShot support (temperature and rel. humidity)
