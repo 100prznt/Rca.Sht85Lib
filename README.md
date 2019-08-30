@@ -1,8 +1,3 @@
-## Project under construction :construction:
-This project are curently (2019/08/20) under construction.
-
----
-
 # SHT85 Library
 Open source UWP library for communication with Sensirion Humidity Sensor SHT85. 
 
@@ -112,4 +107,4 @@ Contributions are welcome. Fork this repository and send a pull request if you h
 
 
 ## Related Projects
-* [OpenPoolControl](https://github.com/100prznt/opc)
+* [Rca.EzoDeviceLib](https://github.com/100prznt/Rca.EzoDeviceLib) - Another sensor library for water analytics with Atlas Scientific EZO modules.
